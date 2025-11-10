@@ -2,9 +2,9 @@
   $titre = "Connexion";
 
   include('header.inc.php');
-  include('menu.inc.php');
+  include('menu_client.inc.php');
 ?>
-<h1>Hey client :)</h1>
+
 
 
 <?php

@@ -36,9 +36,12 @@
         </div>
         <div class="col-md-6">
             <label for="statut" class="form-label">Statut</label>
-            <input type="text" class="form-control " id="statut" name="statut" placeholder="Votre statut..." required>
+            <select class="form-select" id="statut" name="statut" required>
+                <option value="" selected disabled>Choisissez votre statut</option>
+                <option value="client">Client</option>
+                <option value="demenageur">Déménageur</option>
+            </select>
         </div>
-    </div>
     <div class="row my-3">
         <div class="d-grid d-md-block">
             <button class="btn btn-outline-primary" type="submit">Inscription</button></div>   
