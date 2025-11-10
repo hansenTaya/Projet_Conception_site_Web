@@ -1,3 +1,10 @@
+<?php
+  $titre = "Menu Client";
+
+  include('biblio.inc.php');
+  include('menu.inc.php');
+?>
+
 <nav class="mb-2 navbar navbar-expand-md navbar-dark bg-dark border-bottom border-body" data-bs-theme="dark">
   <div class="container-fluid">
 
@@ -40,3 +47,6 @@
   </div>
 
 </div>
+<?php
+  include('footer.inc.php');  
+?>

@@ -1,7 +1,7 @@
 <?php
   $titre = "Connexion";
 
-  include('header.inc.php');
+  include('parametres.inc.php');
   include('menu.inc.php');
 ?>
 <h1>Look what we can do :)</h1>
