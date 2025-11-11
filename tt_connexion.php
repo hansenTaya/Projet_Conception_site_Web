@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
     if ($password === $user['password']) 
     {
         // Stocker les infos utilisateur dans la session
-        $_SESSION['id'] = $user['id'];
+        $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
         $_SESSION['nom'] = $user['nom'];
         $_SESSION['prenom'] = $user['prenom'];
         $_SESSION['statut'] = $user['statut'];
@@ -47,11 +47,19 @@ if ($result->num_rows > 0) {
                 header('Location: page_admin.php');
                 break;
             case 'client':
-                header('Location: page_client.php');
+                $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
+                $_SESSION['statut'] = $user['statut']; // client ou demenageur
+                $_SESSION['nom'] = $user['nom'];
+                header('Location: ../Projet_conception_site_web/client/page_client.php');
+
                 break;
             case 'demenageur':
-                header('Location: page_demenageur.php');
+                 $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
+                $_SESSION['statut'] = $user['statut']; // client ou demenageur
+                $_SESSION['nom'] = $user['nom'];
+                header('Location: ../Projet_conception_site_web/demenageur/page_demenageur.php');
                 break;
+               
             default:
                 $_SESSION ['erreur']="Statut inconnu, veuillez contacter un administrateur.";
                 break;

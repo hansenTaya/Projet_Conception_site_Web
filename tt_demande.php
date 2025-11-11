@@ -1,6 +1,14 @@
 <?php
-  session_start(); // Pour les massages
+  session_start(); // Pour les messages
 
+  require_once("param.inc.php"); // si vos paramètres BDD sont ici
+ 
+  $mysqli = new mysqli($host, $login, $passwd, $dbname);
+
+
+  $id_utilisateur = $_SESSION['id_utilisateur'];
+
+  $sql_client="SELECT  id_utilisateur FROM UTILISATEUR WHERE statut='client';"
   // Contenu du formulaire :
   $id_demande = (int) filter_var($_POST['id_demande'], FILTER_SANITIZE_NUMBER_INT);
   $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
@@ -15,10 +23,11 @@
   $nbr_demenageur = htmlentities($_POST['nbr_demenageur']); 
   $ascenseur = filter_var($_POST['ascenseur'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
   $description = htmlentities($_POST['description']);
+
   //gestion de la photo
      $photo_path = null;
   if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = 'uploads/';
+    $upload_dir = '/Projet_conception_site_web/uploads/';
 
     // Crée le dossier s’il n’existe pas
     if (!is_dir($upload_dir)) {
@@ -66,8 +75,8 @@
 
  
   // Modifier la requête en fonction de la table et/ou des attributs :
- if ($stmt = $mysqli->prepare("INSERT INTO demande( id_demande, date, titre, adresse_depart, ville_depart, adresse_arrive, ville_arrive, type_logement_depart, type_logement_arrive, volume, photo_path, nbr_demenageur, ascenseur, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-    $stmt->bind_param("issssssssdisss", $id_demande, $date, $titre, $adresse_depart, $ville_depart, $adresse_arrive, $ville_arrive, $type_logement_depart, $type_logement_arrive, $volume, $photo_path, $nbr_demenageur, $ascenseur, $description);
+ if ($stmt = $mysqli->prepare("INSERT INTO demande( id_demande, date, titre, adresse_depart, ville_depart, adresse_arrive, ville_arrive, type_logement_depart, type_logement_arrive, volume, photo_path, nbr_demenageur, ascenseur, description, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);") ) {
+    $stmt->bind_param("issssssssdssssi", $id_demande, $date, $titre, $adresse_depart, $ville_depart, $adresse_arrive, $ville_arrive, $type_logement_depart, $type_logement_arrive, $volume, $photo_path, $nbr_demenageur, $ascenseur, $description, $id_utilisateur);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "✅ Enregistrement réussi";

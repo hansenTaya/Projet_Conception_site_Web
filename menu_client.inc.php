@@ -27,8 +27,9 @@
   <div class="sidebar-left bg-light border-end p-3 vh-100 d-none d-md-flex flex-column sticky-top" style="width: 230px;">
     <h5 class="text-center mb-4 mt-2">Espace Actions</h5>
     <div class="d-grid gap-2">
-      <a href="demande.php" class="btn btn-primary text-start">🧳 Faire une proposition</a>
-      <a href="voir_propositions.php" class="btn btn-outline-secondary text-start">📦 Voir les reponse</a>
+      <a href="demande.php" class="btn btn-primary text-start">🧳 Faire une demande</a>
+      <a href="voir_proposition.php" class="btn btn-outline-secondary text-start">📦 Voir les propositions</a>
+      <a href="evaluer.php" class="btn btn-outline-warning text-start">⭐ Évaluer</a>
       <a href="messagerie.php" class="btn btn-outline-success text-start">💬 Messagerie</a>
     </div>
   </div>

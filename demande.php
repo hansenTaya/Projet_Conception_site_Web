@@ -79,13 +79,12 @@
       </div>
 
       <!-- Photo -->
-      <div class="row g-3">
-          <div class="col-12 col-md-6">
-              <label for="photo" class="form-label">Photo du logement ou des meubles</label>
-              <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-          </div>
-      </div>
-
+        <div class="row g-3 mt-3">
+            <div class="col-12">
+                <label for="photo" class="form-label">Photo (optionnelle)</label>
+                <input type="file" class="form-control" id="photo" name="photo">
+            </div>
+        </div>
       <!-- Description -->
       <div class="row g-3">
           <div class="col-12">
