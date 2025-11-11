@@ -1,41 +1,34 @@
 <?php
-  session_start(); // Pour les massages
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-  // Contenu du formulaire :
-  $mail =  htmlentities($_POST['mail']);
-  $password = htmlentities($_POST['password']);
- 
- 
-  // Option pour bcrypt (voir le lien du cours vers le site de PHP) :
-  $options = [
-        'cost' => 10,
-  ];
-  // On crypte le mot de passe
-  //$password_crypt = password_hash($mdp, PASSWORD_BCRYPT, $options);
+$mail = htmlentities($_POST['mail']);
+$password = htmlentities($_POST['password']);
 
-  // Connexion :
-  require_once("param.inc.php");
-  $mysqli = new mysqli($host, $login, $passwd, $dbname);
-  if ($mysqli->connect_error) {
-    $_SESSION['erreur']="Problème de connexion à la base de données ! &#128557;";
-      // die('Erreur de connexion (' . $mysqli->connect_errno . ') '
-              // . $mysqli->connect_error);
-  }
+require_once("param.inc.php");
+$mysqli = new mysqli($host, $login, $passwd, $dbname);
 
-        $sql = "SELECT * FROM utilisateur WHERE mail = ?";
+if ($mysqli->connect_error) {
+    $_SESSION['erreur'] = "Problème de connexion à la base de données !";
+    header('Location: connexion.php');
+    exit();
+}
 
-    $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param("s",$mail);
-    $stmt->execute();
-
-$result = $stmt->get_result(); // <-- ici
+// Préparation de la requête
+$sql = "SELECT * FROM utilisateur WHERE mail = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param("s", $mail);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc(); //  Correct
-    echo "Utilisateur trouvé : " . $user['Nom'];
-    if ($password === $user['password']) 
-    {
+    $user = $result->fetch_assoc();
+
+    // ⚠️ Pour un vrai projet, il faut utiliser password_verify(), mais tu compares en clair ici :
+    if ($password === $user['password']) {
         // Stocker les infos utilisateur dans la session
+         
         $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
         $_SESSION['nom'] = $user['nom'];
         $_SESSION['prenom'] = $user['prenom'];
@@ -47,36 +40,25 @@ if ($result->num_rows > 0) {
                 header('Location: page_admin.php');
                 break;
             case 'client':
-                $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
-                $_SESSION['statut'] = $user['statut']; // client ou demenageur
-                $_SESSION['nom'] = $user['nom'];
-                header('Location: ../Projet_conception_site_web/client/page_client.php');
-
+                header('Location: page_client.php');
                 break;
             case 'demenageur':
-                 $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
-                $_SESSION['statut'] = $user['statut']; // client ou demenageur
-                $_SESSION['nom'] = $user['nom'];
-                header('Location: ../Projet_conception_site_web/demenageur/page_demenageur.php');
+                header('Location: page_demenageur.php');
                 break;
-               
             default:
-                $_SESSION ['erreur']="Statut inconnu, veuillez contacter un administrateur.";
+                $_SESSION['erreur'] = "Statut inconnu, contactez un administrateur.";
+                header('Location: connexion.php');
                 break;
         }
-        exit;
-    } 
-    else 
-    {
-        $_SESSION ['erreur']= "Email ou mot de passe incorrect.";
+        exit();
+    } else {
+        $_SESSION['erreur'] = "Email ou mot de passe incorrect.";
+        header('Location: connexion.php');
+        exit();
     }
-
 } else {
-    echo "Aucun utilisateur trouvé.";
+    $_SESSION['erreur'] = "Aucun utilisateur trouvé.";
+    header('Location: connexion.php');
+    exit();
 }
-
-
-  
- header('Location: index.php'); 
-
 ?>

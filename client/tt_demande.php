@@ -3,14 +3,14 @@
 
   require_once("param.inc.php"); // si vos paramètres BDD sont ici
  
-  $mysqli = new mysqli($host, $login, $passwd, $dbname);
+//   $mysqli = new mysqli($host, $login, $passwd, $dbname);
 
 
   $id_utilisateur = $_SESSION['id_utilisateur'];
 
-  //$sql_client="SELECT  id_utilisateur FROM UTILISATEUR WHERE statut='client';"
-  // Contenu du formulaire :
-  $id_demande = (int) filter_var($_POST['id_demande'], FILTER_SANITIZE_NUMBER_INT);
+//   $sql_client="SELECT  id_utilisateur FROM UTILISATEUR WHERE statut='client'";
+  // Contenu du formulaire 
+  //$id_demande = (int) filter_var($_POST['id_demande'], FILTER_SANITIZE_NUMBER_INT);
   $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
   $titre = htmlentities($_POST['titre']);
   $adresse_depart =  htmlentities($_POST['adresse_depart']);
@@ -65,7 +65,7 @@
   //$password_crypt = password_hash($password, PASSWORD_BCRYPT, $options);
 
   // Connexion :
-  require_once("param.inc.php");
+ 
   $mysqli = new mysqli($host, $login, $passwd, $dbname);
   if ($mysqli->connect_error) {
     $_SESSION['erreur']="Problème de connexion à la base de données ! &#128557;";
@@ -75,8 +75,8 @@
 
  
   // Modifier la requête en fonction de la table et/ou des attributs :
- if ($stmt = $mysqli->prepare("INSERT INTO demande( id_demande, date, titre, adresse_depart, ville_depart, adresse_arrive, ville_arrive, type_logement_depart, type_logement_arrive, volume, photo_path, nbr_demenageur, ascenseur, description, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);") ) {
-    $stmt->bind_param("issssssssdssssi", $id_demande, $date, $titre, $adresse_depart, $ville_depart, $adresse_arrive, $ville_arrive, $type_logement_depart, $type_logement_arrive, $volume, $photo_path, $nbr_demenageur, $ascenseur, $description, $id_utilisateur);
+ if ($stmt = $mysqli->prepare("INSERT INTO demande(date, titre, adresse_depart, ville_depart, adresse_arrive, ville_arrive, type_logement_depart, type_logement_arrive, volume, photo_path, nbr_demenageur, ascenseur, description, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);") ) {
+    $stmt->bind_param("ssssssssdssssi", $date, $titre, $adresse_depart, $ville_depart, $adresse_arrive, $ville_arrive, $type_logement_depart, $type_logement_arrive, $volume, $photo_path, $nbr_demenageur, $ascenseur, $description, $id_utilisateur);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "✅ Enregistrement réussi";

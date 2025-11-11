@@ -1,6 +1,6 @@
 <?php
   $titre = "Connexion";
-
+  session_start();
   include('header.inc.php');
   include('menu.inc.php');
 ?>

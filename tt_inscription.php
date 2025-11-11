@@ -42,9 +42,9 @@
   }
 
   // Modifier la requête en fonction de la table et/ou des attributs :
-  if ($stmt = $mysqli->prepare("INSERT INTO utilisateur(Id_utilisateur, nom, prenom, mail, password, telephone, statut) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+  if ($stmt = $mysqli->prepare("INSERT INTO utilisateur(id_utilisateur, nom, prenom, mail, password, telephone, statut) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 
-    $stmt->bind_param("issssis",$Id_utilisateur, $nom, $prenom, $mail, $password, $telephone, $statut);
+    $stmt->bind_param("issssis",$id_utilisateur, $nom, $prenom, $mail, $password, $telephone, $statut);
     // Le message est mis dans la session, il est préférable de séparer message normal et message d'erreur.
     if($stmt->execute()) {
         // Requête exécutée correctement 
