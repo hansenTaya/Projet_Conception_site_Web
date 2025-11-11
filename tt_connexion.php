@@ -40,7 +40,7 @@ if ($result->num_rows > 0) {
                 header('Location: page_admin.php');
                 break;
             case 'client':
-                header('Location: page_client.php');
+                header('Location: menu_client.inc.php');
                 break;
             case 'demenageur':
                 header('Location: page_demenageur.php');
