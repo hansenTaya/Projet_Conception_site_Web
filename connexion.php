@@ -17,7 +17,7 @@
             <div class="mb-3">
               <i class="fas fa-sign-in-alt text-primary" style="font-size: 3rem;"></i>
             </div>
-            <h2 class="card-title fw-bold">Connexion à votre compte</h2>
+            <h2 class="card-title fw-bold">Connexion à votre compte personnel</h2>
             <p class="text-muted">Accédez à votre espace personnel</p>
           </div>
 
