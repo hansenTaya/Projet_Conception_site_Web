@@ -10,7 +10,7 @@ include('message.inc.php');
   <div class="container-fluid">
     <!-- Partie gauche -->
     <a class="navbar-brand fw-bold" href="index.php">
-      <i class="fas fa-truck-moving me-2"></i>Just move it :)
+      <i class="fas fa-truck-moving me-2"></i>Just move it
     </a>
 
     <!-- Bouton burger (mobile) -->
