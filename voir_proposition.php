@@ -45,6 +45,10 @@ if (!$result) {
 }
 
 // Affichage
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4905521f7bc48ae5495bf42a3f5d305d83272f09
 
 echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
 
