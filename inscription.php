@@ -17,7 +17,7 @@
             <div class="mb-3">
               <i class="fas fa-user-plus text-primary" style="font-size: 3rem;"></i>
             </div>
-            <h2 class="card-title fw-bold">Création d'un compte</h2>
+            <h2 class="card-title fw-bold">Création d'un compte personnel</h2>
             <p class="text-muted">Rejoignez-nous et profitez de nos services de déménagement</p>
           </div>
 
