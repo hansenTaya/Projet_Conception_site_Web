@@ -45,7 +45,7 @@ if (!$result) {
 }
 
 // Affichage
-echo "<h2>💰 Mes propositions</h2>";
+
 
 echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
 
