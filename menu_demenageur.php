@@ -22,6 +22,7 @@
     <div class="d-grid gap-2">
       <a href="afficher_demande.php" class="btn btn-primary text-start">📋 Voir les demandes</a>
       <a href="mes_proposition.php" class="btn btn-outline-secondary text-start">💰 Mes propositions</a>
+      <a href="mes_mission.php" class="btn btn-outline-secondary text-start">💰 Mes Mission</a>
       <a href="messagerie.php" class="btn btn-outline-info text-start">💬 Messagerie</a>
     </div>
   </div>

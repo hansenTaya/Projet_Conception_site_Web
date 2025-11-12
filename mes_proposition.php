@@ -3,7 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once("param.inc.php");
-include('header.inc.php');
+
+include('menu_demenageur.php');
 if (!isset($_SESSION['id_utilisateur'])) {
     die("Erreur : l'utilisateur n'est pas connecté.");
 }
@@ -32,13 +33,6 @@ if (!$result) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">🚚 Just Move It :) - Déménageur</span>
-        <span class="text-white">Connecté : <?= htmlspecialchars($_SESSION['prenom'] . ' ' . $_SESSION['nom']) ?></span>
-    </div>
-</nav>
 
 <div class="container">
     <h2 class="mb-4">💰 Mes propositions</h2>

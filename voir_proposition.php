@@ -17,23 +17,22 @@ if ($mysqli->connect_error) {
 
 // Requête selon le rôle de l'utilisateur
 if ($statut === 'client') {
-    // Le client voit les propositions qu'il a reçues
     $sql = "SELECT p.*, u.nom AS nom_demenageur, d.titre 
             FROM proposition p
             JOIN utilisateur u ON p.id_demenageur = u.id_utilisateur
             JOIN demande d ON p.id_demande = d.id_demande
-            WHERE p.id_client = ?
+            WHERE p.id_client = ? 
+            AND p.reponse = 'en_attente'
             ORDER BY p.date_creation DESC";
 } else {
-    // Le déménageur voit les propositions qu'il a faites
     $sql = "SELECT p.*, u.nom AS nom_client, d.titre 
             FROM proposition p
             JOIN utilisateur u ON p.id_client = u.id_utilisateur
             JOIN demande d ON p.id_demande = d.id_demande
             WHERE p.id_demenageur = ?
+            AND p.reponse = 'en_attente'
             ORDER BY p.date_creation DESC";
 }
-
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $id_utilisateur);
 $stmt->execute();
@@ -45,21 +44,17 @@ if (!$result) {
 }
 
 // Affichage
-<<<<<<< HEAD
-=======
-
->>>>>>> 4905521f7bc48ae5495bf42a3f5d305d83272f09
 
 echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Détermination de la couleur selon la réponse
-        $reponse = isset($row['reponse']) ? $row['reponse'] : 'En attente';
+        $reponse = isset($row['reponse']) ? $row['reponse'] : 'en_attente';
         $badgeClass = 'secondary'; // par défaut
-        if ($reponse === 'Acceptée') $badgeClass = 'success';
-        elseif ($reponse === 'Refusée') $badgeClass = 'danger';
-        elseif ($reponse === 'En attente') $badgeClass = 'warning';
+        if ($reponse === 'acceptee') $badgeClass = 'success';
+        elseif ($reponse === 'refusee') $badgeClass = 'danger';
+        elseif ($reponse === 'en_attente') $badgeClass = 'warning';
 
             echo "<div class='card shadow-sm p-3 mb-4 border-0'>";
             echo "  <div class='card-body'>";
@@ -67,14 +62,12 @@ if ($result->num_rows > 0) {
             echo "    <p class='card-text mb-2'><strong>💸 Montant proposé :</strong> " . htmlspecialchars($row['prix']) . " €</p>";
             echo "    <p class='card-text mb-0'><strong>Statut :</strong> <span class='badge bg-$badgeClass'>" . htmlspecialchars($reponse) . "</span></p>";
 
-            // Si c’est un client et la proposition est en attente → afficher les boutons
-            if ($statut === 'client' && $reponse === 'En attente') {
                 echo "<form action='traiter_proposition.php' method='post' class='mt-3'>";
                 echo "  <input type='hidden' name='id_proposition' value='" . $row['id_proposition'] . "'>";
                 echo "  <button type='submit' name='action' value='accepter' class='btn btn-success btn-sm me-2'>✅ Accepter</button>";
                 echo "  <button type='submit' name='action' value='refuser' class='btn btn-danger btn-sm'>❌ Refuser</button>";
                 echo "</form>";
-            }
+            
 
             echo "  </div>";
             echo "</div>";
