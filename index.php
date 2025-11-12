@@ -10,7 +10,8 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-8 mx-auto text-center">
-          <h1 class="display-4 fw-bold mb-4">Votre déménagem Just Move It</h1>
+          <h1 class="display-4 fw-bold mb-4">Votre déménagement sans stress</h1>
+          <h1 class="display-4 fw-bold mb-4">Just Move It</h1>
           <p class="lead mb-4">Confiez-nous la planification, l'emballage et le transport de vos biens. Notre équipe expérimentée s'occupe de tout pour que vous profitiez d'un déménagement serein.</p>
           <div class="d-flex gap-3 justify-content-center flex-wrap">
             <a class="btn btn-light btn-lg" href="inscription.php">

@@ -1,14 +1,11 @@
 <?php
+  session_start();
   $titre = "Demande de Déménagement";
   include('header.inc.php');
   include('menu_client.inc.php');
 ?>
 
-<div class="d-flex flex-column flex-md-row">
-
-  
   <!-- Contenu principal (formulaire) -->
-  <div class="flex-grow-1 p-4" style="min-width:0;">
     <h1 class="mb-4">Demande de Déménagement</h1>
 
     <form method="POST" action="tt_demande.php" enctype="multipart/form-data">
@@ -102,7 +99,6 @@
 
     </form>
   </div>
-
 </div>
 
 <?php
