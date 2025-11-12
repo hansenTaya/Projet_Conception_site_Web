@@ -2,9 +2,9 @@
 session_start();
 
 require_once("param.inc.php");
-$titre = "Demande de Déménagement";
-  include('header.inc.php');
-  include('menu_client.inc.php');
+$titre = "Mes propositions";
+include('header.inc.php');
+include('menu_client.inc.php');
 
 $id_utilisateur = $_SESSION['id_utilisateur'];
 $statut = $_SESSION['statut'];
@@ -45,11 +45,6 @@ if (!$result) {
 }
 
 // Affichage
-<<<<<<< HEAD
-=======
-
->>>>>>> 4905521f7bc48ae5495bf42a3f5d305d83272f09
-
 echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
 
 if ($result->num_rows > 0) {
@@ -87,4 +82,10 @@ if ($result->num_rows > 0) {
     echo "</div>";
 }
 
+?>
+  </div>
+</div>
+
+<?php
+include('footer.inc.php');
 ?>
