@@ -1,8 +1,7 @@
 <?php
   $titre = "Menu Client";
 
-  include('biblio.inc.php');
-  include('menu.inc.php');
+  include('header.inc.php');
 ?>
 
 <nav class="mb-2 navbar navbar-expand-md navbar-dark bg-dark border-bottom border-body" data-bs-theme="dark">

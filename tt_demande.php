@@ -27,7 +27,8 @@
   //gestion de la photo
      $photo_path = null;
   if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = '/Projet_conception_site_web/uploads/';
+    $upload_dir = __DIR__ . '/uploads/';
+
 
     // Crée le dossier s’il n’existe pas
     if (!is_dir($upload_dir)) {

@@ -46,7 +46,8 @@
 
         // Déplace le fichier et enregistre le chemin
         if (move_uploaded_file($tmp_name, $destination)) {
-            $photo_path = $destination;
+           $photo_path = 'uploads/' . $new_name;
+
         } else {
             $_SESSION['erreur'] = "Erreur lors du transfert de la photo.";
         }

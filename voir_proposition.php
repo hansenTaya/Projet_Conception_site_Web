@@ -45,7 +45,6 @@ if (!$result) {
 }
 
 // Affichage
-echo "<h2>💰 Mes propositions</h2>";
 
 echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
 
@@ -58,13 +57,24 @@ if ($result->num_rows > 0) {
         elseif ($reponse === 'Refusée') $badgeClass = 'danger';
         elseif ($reponse === 'En attente') $badgeClass = 'warning';
 
-        echo "<div class='card shadow-sm p-3 mb-4 border-0'>";
-        echo "  <div class='card-body'>";
-        echo "    <h4 class='card-title text-primary'>" . htmlspecialchars($row['titre']) . "</h4>";
-        echo "    <p class='card-text mb-2'><strong>💸 Montant proposé :</strong> " . htmlspecialchars($row['prix']) . " €</p>";
-        echo "    <p class='card-text mb-0'><strong>Statut :</strong> <span class='badge bg-$badgeClass'>" . htmlspecialchars($reponse) . "</span></p>";
-        echo "  </div>";
-        echo "</div>";
+            echo "<div class='card shadow-sm p-3 mb-4 border-0'>";
+            echo "  <div class='card-body'>";
+            echo "    <h4 class='card-title text-primary'>" . htmlspecialchars($row['titre']) . "</h4>";
+            echo "    <p class='card-text mb-2'><strong>💸 Montant proposé :</strong> " . htmlspecialchars($row['prix']) . " €</p>";
+            echo "    <p class='card-text mb-0'><strong>Statut :</strong> <span class='badge bg-$badgeClass'>" . htmlspecialchars($reponse) . "</span></p>";
+
+            // Si c’est un client et la proposition est en attente → afficher les boutons
+            if ($statut === 'client' && $reponse === 'En attente') {
+                echo "<form action='traiter_proposition.php' method='post' class='mt-3'>";
+                echo "  <input type='hidden' name='id_proposition' value='" . $row['id_proposition'] . "'>";
+                echo "  <button type='submit' name='action' value='accepter' class='btn btn-success btn-sm me-2'>✅ Accepter</button>";
+                echo "  <button type='submit' name='action' value='refuser' class='btn btn-danger btn-sm'>❌ Refuser</button>";
+                echo "</form>";
+            }
+
+            echo "  </div>";
+            echo "</div>";
+
     }
 } else {
     echo "<div class='alert alert-info text-center p-4 rounded shadow-sm'>";
