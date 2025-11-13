@@ -27,7 +27,7 @@
   //gestion de la photo
      $photo_path = null;
   if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = __DIR__ . '/uploads/';
+    $upload_dir = __DIR__ . '/../uploads/';
 
 
     // Crée le dossier s’il n’existe pas
@@ -91,6 +91,6 @@
 }
 
 
- header('Location: index.php');
+ header('Location: accueil_client.php');
 
 ?>
