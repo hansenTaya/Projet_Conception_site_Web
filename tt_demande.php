@@ -25,12 +25,12 @@
   $description = htmlentities($_POST['description']);
 
   //gestion de la photo
-     $photo_path = null;
-  if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    $photo_path = null;
+ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+
+    // Chemin serveur pour stocker
     $upload_dir = __DIR__ . '/../uploads/';
 
-
-    // Crée le dossier s’il n’existe pas
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0777, true);
     }
@@ -41,22 +41,29 @@
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
     if (in_array($extension, $allowed_extensions)) {
-        // Nom unique pour éviter les collisions
+
         $new_name = uniqid('photo_', true) . '.' . $extension;
+
+        // emplacement serveur
         $destination = $upload_dir . $new_name;
 
-        // Déplace le fichier et enregistre le chemin
         if (move_uploaded_file($tmp_name, $destination)) {
-            $photo_path = $destination;
+
+            // ce qu’on stocke en BDD = URL affichable
+            $photo_path = 'uploads/' . $new_name;
+
         } else {
             $_SESSION['erreur'] = "Erreur lors du transfert de la photo.";
         }
+
     } else {
-        $_SESSION['erreur'] = "Format de photo non autorisé (JPG, PNG, GIF uniquement).";
+        $_SESSION['erreur'] = "Format non autorisé.";
     }
+
 } else {
-    $_SESSION['erreur'] = "Aucune photo envoyée ou erreur d’upload.";
+    $_SESSION['erreur'] = "Aucune photo envoyée.";
 }
+
 
   // Option pour bcrypt (voir le lien du cours vers le site de PHP) :
   $options = [
