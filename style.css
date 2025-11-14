@@ -1,0 +1,133 @@
+/* Si vous avez besoin d'un fichier CSS */
+
+
+.contenu{
+    height:100vh;
+    width: 100vw;
+    /* flex c'est pour aligner les conteneurs enfants en ligne  */
+    display: flex;
+    
+    justify-content: space-between;
+}
+.contain{
+    border-radius: 8px;
+    height: 98%;
+    width: 95%;
+    background-color: rgba(212, 210, 210, 0.881);
+    margin :auto;
+    
+
+}
+.navbar{
+    height:15%;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;    
+
+
+
+
+
+}
+.mot_accueil{
+    font-size: medium;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+.nav-links {
+  list-style: none;                  /* Enlève les puces */
+  
+  gap: 30px;                         /* Espace entre les liens */
+  margin: 0;
+  padding: 0;
+  border: none;
+
+}
+.btn-connexion{
+    
+    background: #ffcc00;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+#chatMessageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  /* Bulle de message (utilisateur) */
+  .message-bubble-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 18px 18px 0 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+  }
+
+  /* Bulle de message (destinataire) */
+  .message-bubble-other {
+    align-self: flex-start;
+    background: #e9ecef;
+    color: #333;
+    padding: 12px 16px;
+    border-radius: 18px 18px 18px 0;
+    max-width: 70%;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Timestamp du message */
+  .message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* Animation d'entrée */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .message-bubble-user,
+  .message-bubble-other {
+    animation: slideIn 0.3s ease-in-out;
+  }
+
+  /* Focus du textarea */
+  #messageInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  /* Responsive pour mobile */
+  @media (max-width: 576px) {
+    .modal-dialog {
+      margin: 0 !important;
+      width: 100% !important;
+    }
+
+    #chatMessageContainer {
+      height: 300px;
+    }
+
+    .message-bubble-user,
+    .message-bubble-other {
+      max-width: 90%;
+    }
+  }

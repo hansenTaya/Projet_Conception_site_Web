@@ -1,3 +1,4 @@
+/* index.php est le fichier d'accueil du site web parceque c'est le premier fichier chargé par défaut par apache */
 <?php
   session_start();
   $titre = "Service de déménagement";
