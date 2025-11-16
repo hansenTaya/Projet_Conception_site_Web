@@ -9,3 +9,6 @@
 
     <link href="style.css" rel="stylesheet">  
   </head>
+  <?php
+  date_default_timezone_set('Europe/Paris');
+  ?>

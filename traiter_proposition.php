@@ -12,15 +12,15 @@ if (!isset($_POST['id_proposition'], $_POST['action'])) {
 $id_proposition = (int) $_POST['id_proposition'];
 $action = trim($_POST['action']);
 
-// Connexion à la base
+// Connexion BDD
 $mysqli = new mysqli($host, $login, $passwd, $dbname);
 if ($mysqli->connect_error) {
     die("Erreur de connexion : " . $mysqli->connect_error);
 }
 
-// Récupération des infos sur la proposition et la demande associée
+// 🔎 Récupère infos sur la proposition + demande
 $sql = "
-    SELECT p.id_proposition, p.id_demande, d.nbr_demenageur
+    SELECT p.id_demande, d.nbr_demenageur
     FROM proposition p
     JOIN demande d ON p.id_demande = d.id_demande
     WHERE p.id_proposition = ?
@@ -29,8 +29,8 @@ $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $id_proposition);
 $stmt->execute();
 $result = $stmt->get_result();
-$info = $result->fetch_assoc();
 
+$info = $result->fetch_assoc();
 if (!$info) {
     $_SESSION['message'] = "❌ Proposition introuvable.";
     header("Location: voir_proposition.php");
@@ -38,50 +38,67 @@ if (!$info) {
 }
 
 $id_demande = $info['id_demande'];
-$nb_max_demenageurs = (int) $info['nbr_demenageur'];
+$nb_max = (int)$info['nbr_demenageur'];
 
+
+// --------------------------------------------------------------
+// 🟢 ACTION : ACCEPTER
+// --------------------------------------------------------------
 if ($action === 'accepter') {
-    // ✅ Met à jour la réponse à 'acceptee'
-    $update = $mysqli->prepare("UPDATE proposition SET reponse = 'acceptee' WHERE id_proposition = ?");
-    $update->bind_param("i", $id_proposition);
-    $update->execute();
 
-    // ✅ Compte combien de propositions ont été acceptées pour cette demande
-    $resCount = $mysqli->query("
-        SELECT COUNT(*) AS nb_acceptes 
+    // 1) La proposition devient acceptée
+    $mysqli->query("UPDATE proposition SET reponse='acceptee' WHERE id_proposition=$id_proposition");
+
+    // 2) Met à jour la demande en 'acceptee'
+    $mysqli->query("UPDATE demande SET statut='acceptee' WHERE id_demande=$id_demande");
+
+    // 3) Compte combien acceptées au total
+    $nb_acc = $mysqli->query("
+        SELECT COUNT(*) AS total 
         FROM proposition 
-        WHERE id_demande = $id_demande AND reponse = 'acceptee'
-    ");
-    $nb_acceptes = (int)$resCount->fetch_assoc()['nb_acceptes'];
+        WHERE id_demande=$id_demande AND reponse='acceptee'
+    ")->fetch_assoc()['total'];
 
-    // ✅ Si on atteint le nombre max de déménageurs, on refuse les autres
-    if ($nb_acceptes >= $nb_max_demenageurs) {
+    // 4) Si on atteint le quota → refuser les autres
+    if ($nb_acc >= $nb_max) {
         $mysqli->query("
             UPDATE proposition 
-            SET reponse = 'refusee'
-            WHERE id_demande = $id_demande AND reponse = 'en_attente'
+            SET reponse='refusee' 
+            WHERE id_demande=$id_demande AND reponse='en_attente'
         ");
     }
 
-    $_SESSION['message'] = "✅ Proposition acceptée avec succès ! ($nb_acceptes / $nb_max_demenageurs déménageur(s) confirmé(s))";
+    $_SESSION['message'] = "✅ Proposition acceptée ! ($nb_acc / $nb_max déménageur(s) confirmé(s))";
 
-} elseif ($action === 'refuser') {
-    // ❌ Supprime la proposition refusée
-    $delete = $mysqli->prepare("DELETE FROM proposition WHERE id_proposition = ?");
-    $delete->bind_param("i", $id_proposition);
-    $delete->execute();
-
-    $_SESSION['message'] = "❌ Proposition supprimée avec succès.";
-
-} else {
-    $_SESSION['message'] = "⚠️ Action non reconnue.";
 }
 
-// Fermeture propre
+
+// --------------------------------------------------------------
+// 🔴 ACTION : REFUSER
+// --------------------------------------------------------------
+elseif ($action === 'refuser') {
+
+    // 1) Supprime la proposition
+    $mysqli->query("DELETE FROM proposition WHERE id_proposition=$id_proposition");
+
+    // 2) Vérifie s'il reste d'autres propositions
+    $reste = $mysqli->query("
+        SELECT COUNT(*) AS total FROM proposition WHERE id_demande=$id_demande
+    ")->fetch_assoc()['total'];
+
+    // 3) S'il ne reste AUCUNE proposition → demande refusée
+    if ($reste == 0) {
+        $mysqli->query("UPDATE demande SET statut='refusee' WHERE id_demande=$id_demande");
+    }
+
+    $_SESSION['message'] = "❌ Proposition refusée.";
+}
+
+
+// --------------------------------------------------------------
 $stmt->close();
 $mysqli->close();
-
-// Rechargement de la page
 header("Location: voir_proposition.php");
 exit();
+
 ?>

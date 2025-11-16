@@ -11,7 +11,7 @@ $sql = "
     SELECT d.*, u.nom AS nom_client
     FROM demande d
     JOIN utilisateur u ON d.id_utilisateur = u.id_utilisateur
-    ORDER BY d.date DESC
+    ORDER BY d.date_prevue DESC
 ";
 
 $result = $mysqli->query($sql);
@@ -26,7 +26,7 @@ if (!$result) {
     <?php while ($user = $result->fetch_assoc()): ?>
         <div class="card p-3 mb-3">
             <h4><?= htmlspecialchars($user['titre']) ?></h4>
-            <p><strong>Date :</strong> <?= htmlspecialchars($user['date']) ?></p>
+            <p><strong>Date :</strong> <?= htmlspecialchars($user['date_prevue']) ?></p>
             <p><strong>Client :</strong> <?= htmlspecialchars($user['nom_client']) ?></p>
             <p><strong>Adresse départ :</strong> <?= htmlspecialchars($user['adresse_depart']) ?>, <?= htmlspecialchars($user['ville_depart']) ?></p>
             <p><strong>Adresse arrivée :</strong> <?= htmlspecialchars($user['adresse_arrive']) ?>, <?= htmlspecialchars($user['ville_arrive']) ?></p>
@@ -37,11 +37,20 @@ if (!$result) {
             <p><strong>Ascenseur :</strong> <?= $user['ascenseur'] ? 'Oui' : 'Non' ?></p>
             <p><strong>Description :</strong> <?= htmlspecialchars($user['description']) ?></p>
 
-            <?php if (!empty($user['photo_path'])): ?>
-                <p><strong>Photo :</strong></p>
-                <img src="<?= htmlspecialchars($user['photo_path']) ?>" alt="Photo de la demande"
-                     style="max-width:300px; height:auto; border:1px solid #ccc; padding:5px;">
-            <?php endif; ?>
+       <?php
+$photos = $mysqli->query("SELECT photo_path FROM photos_demande WHERE id_demande = ".$user['id_demande']);
+
+if ($photos && $photos->num_rows > 0) {
+    while ($p = $photos->fetch_assoc()) {
+        echo "<img src='".htmlspecialchars($p['photo_path'])."' 
+              class='img-fluid rounded mb-2' 
+              style='max-width:200px;'>";
+    }
+} else {
+    echo "<p class='text-muted'>Aucune photo</p>";
+}
+?>
+
 <!-- ✅ Formulaire pour proposer un prix -->
 <?php if ($_SESSION['statut'] === 'demenageur'): ?>
 

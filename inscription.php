@@ -70,10 +70,10 @@
                 <select class="form-select form-select-lg" id="statut" name="statut" required>
                   <option value="" selected disabled>Choisissez votre statut</option>
                   <option value="client">
-                    <i class="fas fa-shopping-cart"></i> Client
+                    <i class="fas fa-shopping-cart"></i> client
                   </option>
                   <option value="demenageur">
-                    <i class="fas fa-truck"></i> Déménageur
+                    <i class="fas fa-truck"></i> demenageur
                   </option>
                 </select>
               </div>

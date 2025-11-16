@@ -6,21 +6,7 @@ include('message.inc.php');
 ?>
 
 <!-- Barre de navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-body" data-bs-theme="dark">
-  <div class="container-fluid">
-    <!-- Partie gauche -->
-    <a class="navbar-brand fw-bold" href="index.php">
-      <i class="fas fa-truck-moving me-2"></i>Just move it
-    </a>
 
-    <!-- Bouton burger (mobile) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarClient" aria-controls="navbarClient" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    
-  </div>
-</nav>
 
 <script>
   // Petite validation côté client : empêche l'envoi si la recherche est vide

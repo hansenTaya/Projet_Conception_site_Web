@@ -17,7 +17,8 @@
           </div>
           <div class="col-12 col-md-6">
               <label for="date" class="form-label">Date prévue</label>
-              <input type="date" class="form-control" id="date" name="date" required>
+              <input type="date" class="form-control" id="date" name="date" min="<?= date('Y-m-d'); ?>" required>
+
           </div>
       </div>
 
@@ -77,9 +78,9 @@
 
       <!-- Photo -->
         <div class="row g-3 mt-3">
-            <div class="col-12">
-                <label for="photo" class="form-label">Photo (optionnelle)</label>
-                <input type="file" class="form-control" id="photo" name="photo">
+           <div class="col-12">
+                <label for="photo" class="form-label">Photos (optionnel)</label>
+                <input type="file" class="form-control" id="photo" name="photos[]" multiple>
             </div>
         </div>
       <!-- Description -->

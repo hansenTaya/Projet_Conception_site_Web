@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
 
         // Redirection selon le statut
         switch ($user['statut']) {
-            case 'admin':
+            case 'administrateur':
                 header('Location: page_admin.php');
                 break;
             case 'client':

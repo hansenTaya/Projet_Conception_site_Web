@@ -1,7 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+
 }
+date_default_timezone_set('Europe/Paris');
 
 
 ?>
@@ -11,45 +13,39 @@ if (session_status() === PHP_SESSION_NONE) {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $titre; ?></title>
-    <a href="deconnexion.php" class="btn btn-outline-danger mt-3">🚪 Se déconnecter</a>
+    <title><?php echo $titre ?> </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">  
+    <link href="style.css" rel="stylesheet">
+    
   </head>
-  <body>
-
-    
-
-
-
-
-    
-    <nav class="mb-2 navbar navbar-expand-md bg-dark border-bottom border-body" data-bs-theme="dark">
-     <div class="container-fluid">
-
-     
-    <a class="navbar-brand" href="index.php">Just move it :)</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="visual.php">Visualiser démenagement</a>
-        </li>
-
-      </ul>
-
-      <!-- Partie droite -->
-      <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="inscription.php">Inscription</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="connexion.php">Connexion</a>
-          </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  <body class="bg-light">
+    <header>
+      <nav class="navbar navbar-expand-lg bg-white shadow-sm py-3 mb-4">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-primary" href="index.php">Just Move It</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="visual.php">Visualiser demenagement</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav align-items-lg-center gap-2">
+              <li class="nav-item">
+                <a class="btn btn-outline-primary" href="inscription.php">Inscription</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-primary text-white" href="connexion.php">Connexion</a>
+              </li>
+              <?php if (!empty($_SESSION['id_utilisateur'])): ?>
+              <li class="nav-item">
+                <a class="btn btn-outline-danger" href="deconnexion.php">Se deconnecter</a>
+              </li>
+              <?php endif; ?>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>

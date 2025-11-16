@@ -1,103 +1,109 @@
 <?php
-  session_start(); // Pour les messages
+session_start();
+require_once("param.inc.php");
 
-  require_once("param.inc.php"); // si vos paramètres BDD sont ici
- 
-  $mysqli = new mysqli($host, $login, $passwd, $dbname);
+$mysqli = new mysqli($host, $login, $passwd, $dbname);
+if ($mysqli->connect_error) {
+    die("Erreur DB : " . $mysqli->connect_error);
+}
+
+$id_utilisateur = $_SESSION['id_utilisateur'];
+
+// Récupération du formulaire
+$date = $_POST['date'];
+$titre = $_POST['titre'];
+$adresse_depart = $_POST['adresse_depart'];
+$ville_depart = $_POST['ville_depart'];
+$adresse_arrive = $_POST['adresse_arrive'];
+$ville_arrive = $_POST['ville_arrive'];
+$type_logement_depart = $_POST['type_logement_depart'];
+$type_logement_arrive = $_POST['type_logement_arrive'];
+$volume = (float) $_POST['volume'];
+$nbr_demenageur = (int) $_POST['nbr_demenageur'];
+$ascenseur = isset($_POST['ascenseur']) ? 1 : 0;
+$description = $_POST['description'];
+
+// Vérification date >= aujourd’hui
+$today = date("Y-m-d");
+if ($date < $today) {
+    $_SESSION['erreur'] = "❌ La date prévue ne peut pas être antérieure à aujourd'hui.";
+    header("Location: demande.php");
+    exit();
+}
+
+// INSERT DEMANDE (pas de photo ici)
+$stmt = $mysqli->prepare(" INSERT INTO demande(
+        date_prevue, titre, adresse_depart, ville_depart,
+        adresse_arrive, ville_arrive, type_logement_depart,
+        type_logement_arrive, volume, nbr_demenageur, ascenseur,
+        description, id_utilisateur
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+");
+
+$stmt->bind_param( "ssssssssdissi",
+    $date,
+    $titre,
+    $adresse_depart,
+    $ville_depart,
+    $adresse_arrive,
+    $ville_arrive,
+    $type_logement_depart,
+    $type_logement_arrive,
+    $volume,
+    $nbr_demenageur,
+    $ascenseur,
+    $description,
+    $id_utilisateur
+);
+
+if (!$stmt->execute()) {
+    $_SESSION['erreur'] = "❌ Erreur lors de l’enregistrement : " . $stmt->error;
+    header("Location: demande.php");
+    exit();
+}
+
+// ID de la demande créée
+$id_demande = $stmt->insert_id;
+$stmt->close();
 
 
-  $id_utilisateur = $_SESSION['id_utilisateur'];
+// 🔥 UPLOAD MULTIPLE PHOTOS APRÈS INSERT
+if (!empty($_FILES['photos']['name'][0])) {
 
-  //$sql_client="SELECT  id_utilisateur FROM UTILISATEUR WHERE statut='client';"
-  // Contenu du formulaire :
-  $id_demande = (int) filter_var($_POST['id_demande'], FILTER_SANITIZE_NUMBER_INT);
-  $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
-  $titre = htmlentities($_POST['titre']);
-  $adresse_depart =  htmlentities($_POST['adresse_depart']);
-  $ville_depart = htmlentities($_POST['ville_depart']);
-  $adresse_arrive =  htmlentities($_POST['adresse_arrive']);
-  $ville_arrive = htmlentities($_POST['ville_arrive']);
-  $type_logement_depart = htmlentities($_POST['type_logement_depart']);
-  $type_logement_arrive = htmlentities($_POST['type_logement_arrive']);
-  $volume = (float) filter_var($_POST['volume'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-  $nbr_demenageur = htmlentities($_POST['nbr_demenageur']); 
-  $ascenseur = filter_var($_POST['ascenseur'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-  $description = htmlentities($_POST['description']);
-
-  //gestion de la photo
-    $photo_path = null;
- if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-
-    // Chemin serveur pour stocker
     $upload_dir = __DIR__ . '/../uploads/';
+    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
-    }
+    $count = count($_FILES['photos']['name']);
 
-    $tmp_name = $_FILES['photo']['tmp_name'];
-    $original_name = $_FILES['photo']['name'];
-    $extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+    for ($i = 0; $i < $count; $i++) {
 
-    if (in_array($extension, $allowed_extensions)) {
+        if ($_FILES['photos']['error'][$i] !== UPLOAD_ERR_OK) continue;
 
-        $new_name = uniqid('photo_', true) . '.' . $extension;
+        $tmp = $_FILES['photos']['tmp_name'][$i];
+        $name = $_FILES['photos']['name'][$i];
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 
-        // emplacement serveur
-        $destination = $upload_dir . $new_name;
+        $allowed = ['jpg', 'jpeg', 'png', 'gif'];
 
-        if (move_uploaded_file($tmp_name, $destination)) {
+        if (!in_array($ext, $allowed)) continue;
 
-            // ce qu’on stocke en BDD = URL affichable
-            $photo_path = 'uploads/' . $new_name;
+        $new_name = uniqid('photo_', true) . '.' . $ext;
+        $dest = $upload_dir . $new_name;
 
-        } else {
-            $_SESSION['erreur'] = "Erreur lors du transfert de la photo.";
+        if (move_uploaded_file($tmp, $dest)) {
+
+            $photo_path = "uploads/" . $new_name;
+
+            $mysqli->query("
+                INSERT INTO photos_demande(id_demande, photo_path)
+                VALUES ($id_demande, '$photo_path')
+            ");
         }
-
-    } else {
-        $_SESSION['erreur'] = "Format non autorisé.";
     }
-
-} else {
-    $_SESSION['erreur'] = "Aucune photo envoyée.";
 }
 
-
-  // Option pour bcrypt (voir le lien du cours vers le site de PHP) :
-  $options = [
-        'cost' => 10,
-  ];
-  // On crypte le mot de passe
-  //$password_crypt = password_hash($password, PASSWORD_BCRYPT, $options);
-
-  // Connexion :
-  require_once("param.inc.php");
-  $mysqli = new mysqli($host, $login, $passwd, $dbname);
-  if ($mysqli->connect_error) {
-    $_SESSION['erreur']="Problème de connexion à la base de données ! &#128557;";
-      // die('Erreur de connexion (' . $mysqli->connect_errno . ') '
-              // . $mysqli->connect_error);
-  }
-
- 
-  // Modifier la requête en fonction de la table et/ou des attributs :
- if ($stmt = $mysqli->prepare("INSERT INTO demande( id_demande, date, titre, adresse_depart, ville_depart, adresse_arrive, ville_arrive, type_logement_depart, type_logement_arrive, volume, photo_path, nbr_demenageur, ascenseur, description, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);") ) {
-    $stmt->bind_param("issssssssdssssi", $id_demande, $date, $titre, $adresse_depart, $ville_depart, $adresse_arrive, $ville_arrive, $type_logement_depart, $type_logement_arrive, $volume, $photo_path, $nbr_demenageur, $ascenseur, $description, $id_utilisateur);
-
-    if ($stmt->execute()) {
-        $_SESSION['message'] = "✅ Enregistrement réussi";
-    } else {
-        $_SESSION['erreur'] = "❌ Impossible d'enregistrer : " . $stmt->error;
-    }
-
-   
-} else {
-    $_SESSION['erreur'] = "Erreur dans la préparation de la requête.";
-}
-
-
- header('Location: accueil_client.php');
+$_SESSION['message'] = "✅ Demande enregistrée avec succès !";
+header("Location: accueil_client.php");
+exit();
 
 ?>
