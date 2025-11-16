@@ -2,7 +2,7 @@
   session_start();
   $titre = "Inscription";
   include('header.inc.php');
-  include('menu.inc.php');
+  
   include('message.inc.php');
 ?>
 

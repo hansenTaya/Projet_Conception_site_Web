@@ -22,15 +22,20 @@ if ($mysqli->connect_error) {
 }
 
 // Récupère les propositions acceptées pour ce déménageur avec les détails de la demande
-$sql = "SELECT p.*, d.titre, d.date, d.adresse_depart, d.ville_depart, d.adresse_arrive, d.ville_arrive,
-               d.type_logement_depart, d.type_logement_arrive, d.volume, d.photo_path, d.nbr_demenageur,
-               d.ascenseur, d.description, u.nom AS nom_client
+$sql = "SELECT p.*, 
+               d.titre, d.date_prevue, d.adresse_depart, d.ville_depart, 
+               d.adresse_arrive, d.ville_arrive,
+               d.type_logement_depart, d.type_logement_arrive, 
+               d.volume, d.nbr_demenageur,
+               d.ascenseur, d.description, 
+               u.nom AS nom_client
         FROM proposition p
         JOIN demande d ON p.id_demande = d.id_demande
         JOIN utilisateur u ON p.id_client = u.id_utilisateur
         WHERE p.id_demenageur = ?
         AND p.reponse = 'acceptee'
-        ORDER BY d.date DESC";
+        ORDER BY d.date_prevue DESC";
+
 
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $id_utilisateur);
@@ -45,7 +50,7 @@ if ($result->num_rows > 0) {
         echo "  <div class='card-body'>";
         echo "    <h4 class='card-title text-primary'>" . htmlspecialchars($row['titre']) . "</h4>";
         echo "    <p class='card-text mb-2'><strong>Client :</strong> " . htmlspecialchars($row['nom_client']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Date :</strong> " . htmlspecialchars($row['date']) . "</p>";
+        echo "    <p class='card-text mb-2'><strong>Date :</strong> " . htmlspecialchars($row['date_prevue']) . "</p>";
         echo "    <p class='card-text mb-2'><strong>Adresse départ :</strong> " . htmlspecialchars($row['adresse_depart'] . ", " . $row['ville_depart']) . "</p>";
         echo "    <p class='card-text mb-2'><strong>Adresse arrivée :</strong> " . htmlspecialchars($row['adresse_arrive'] . ", " . $row['ville_arrive']) . "</p>";
         echo "    <p class='card-text mb-2'><strong>Type logement départ :</strong> " . htmlspecialchars($row['type_logement_depart']) . "</p>";

@@ -20,7 +20,7 @@
     $sql = "SELECT * FROM utilisateur 
         WHERE (nom LIKE ? OR prenom LIKE ?)
           AND id_utilisateur != ? 
-          AND statut != ?";
+          AND statut != ? AND statut != 'administrateur'";
 
 $stmt = $mysqli->prepare($sql);
 $like = "%{$search}%";
@@ -30,24 +30,16 @@ $result = $stmt->get_result();
     // query permet d'affecter le résultat de la requête à une variable
 
     
-    
     if ($result->num_rows > 0) {
     // On récupère l'utilisateur trouvé
     $row = $result->fetch_assoc();
     
-    echo "<div class='user-result' style='border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin: 10px 0; background-color: #f9f9f9;'>";
-
-    echo "<p style='margin: 0 0 10px 0; font-weight: bold;'>
-            " . htmlspecialchars($row['nom']) . " " . htmlspecialchars($row['prenom']) . "
-          </p>";
-
-    // Lien direct vers la page de chat
     echo "<a href='messagerie_chat_modal.inc.php?destinataire_id=" . $row['id_utilisateur'] . "' 
-             class='btn btn-primary'>
-             Démarrer le chat
-          </a>";
+        class='list-group-item list-group-item-action'>
+        <strong>" . htmlspecialchars($row['nom']) . " " . htmlspecialchars($row['prenom']) . "</strong><br>
+        <small class='text-muted'>Cliquez pour ouvrir la discussion</small>
+      </a>";
 
-    echo "</div>";
 
 } else {
     echo "<p>Aucun utilisateur trouvé.</p>";

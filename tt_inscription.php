@@ -10,6 +10,9 @@
   $telephone = (int) filter_var($_POST['telephone'], FILTER_SANITIZE_NUMBER_INT);
   $statut = htmlentities($_POST['statut']); //le statut si l'utilisateur est un admin ou client ou demenageur
  
+
+
+ 
   // Option pour bcrypt (voir le lien du cours vers le site de PHP) :
   $options = [
         'cost' => 10,

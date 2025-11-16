@@ -33,8 +33,13 @@
             coordonne chaque etape pour un demenagement serein.
           </p>
           <div class="d-flex flex-wrap gap-3">
-            <a class="btn btn-light btn-lg fw-semibold" href="inscription.php">S'inscrire</a>
-            <a class="btn btn-outline-light btn-lg fw-semibold" href="connexion.php">Se connecter</a>
+            <?php
+            if (!isset($_SESSION['id_utilisateur'])) {
+             echo " <a class='btn btn-light btn-lg fw-semibold' href='inscription.php'>S'inscrire</a> ";
+             echo  "<a class='btn btn-outline-light btn-lg fw-semibold' href='connexion.php'>Se connecter</a>  ";
+
+            }
+            ?>
           </div>
         </div>
         <div class="col-lg-5">

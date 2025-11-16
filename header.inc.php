@@ -28,17 +28,9 @@ date_default_timezone_set('Europe/Paris');
           </button>
           <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="visual.php">Visualiser demenagement</a>
-              </li>
+
             </ul>
             <ul class="navbar-nav align-items-lg-center gap-2">
-              <li class="nav-item">
-                <a class="btn btn-outline-primary" href="inscription.php">Inscription</a>
-              </li>
-              <li class="nav-item">
-                <a class="btn btn-primary text-white" href="connexion.php">Connexion</a>
-              </li>
               <?php if (!empty($_SESSION['id_utilisateur'])): ?>
               <li class="nav-item">
                 <a class="btn btn-outline-danger" href="deconnexion.php">Se deconnecter</a>

@@ -4,13 +4,8 @@
   session_start();
  }
  ?>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">🚚 Just Move It :) - Déménageur</span>
-        <span class="text-white">Connecté : <?= htmlspecialchars($_SESSION['prenom'] . ' ' . $_SESSION['nom']) ?></span>
-    </div>
-</nav>
+
+
 
 <!-- Layout principal -->
 <div class="d-flex flex-column flex-md-row">

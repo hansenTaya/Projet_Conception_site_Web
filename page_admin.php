@@ -123,7 +123,7 @@ include('menu.inc.php');
           SELECT d.*, u.nom, u.prenom
           FROM demande d
           JOIN utilisateur u ON d.id_utilisateur = u.id_utilisateur
-          ORDER BY d.date DESC LIMIT 5
+          ORDER BY d.date_prevue DESC LIMIT 5
         ";
         $result = $mysqli->query($sql);
 

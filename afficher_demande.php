@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once("param.inc.php");
+$titre = "Voir les demandes";
+include('header.inc.php');
 include('menu_demenageur.php');
 // Connexion à la BDD
 $mysqli = new mysqli($host, $login, $passwd, $dbname);
@@ -96,3 +98,7 @@ if ($photos && $photos->num_rows > 0) {
         😔 Désolé, aucune demande de déménagement disponible pour le moment.
     </div>
 <?php endif; ?>
+
+<?php
+include('footer.inc.php');            
+?>  

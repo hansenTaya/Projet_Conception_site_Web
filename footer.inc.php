@@ -13,8 +13,8 @@ include('biblio.inc.php');
 
     <div class="d-flex justify-content-center gap-4 mb-3">
       <a href="index.php" class="text-white text-decoration-none small">Accueil</a>
-      <a href="connexion.php" class="text-white text-decoration-none small">Connexion</a>
-      <a href="inscription.php" class="text-white text-decoration-none small">Inscription</a>
+      <a  class="text-white text-decoration-none small">Les meilleurs demenageurs</a>
+      <a class="text-white text-decoration-none small">Qualite et confort</a>
       
     </div>
 
