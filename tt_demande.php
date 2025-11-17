@@ -70,7 +70,8 @@ $stmt->close();
 // 🔥 UPLOAD MULTIPLE PHOTOS APRÈS INSERT
 if (!empty($_FILES['photos']['name'][0])) {
 
-    $upload_dir = __DIR__ . '/../uploads/';
+   $upload_dir = __DIR__ . '/uploads/';
+
     if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
     $count = count($_FILES['photos']['name']);

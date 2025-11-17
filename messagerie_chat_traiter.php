@@ -61,7 +61,7 @@
 
   if ($stmt->execute()) {
 
-    header("Location: messagerie_chat_modal.inc.php?destinataire_id=" . $destinataire_id);
+    header("Location: messagerie.php?destinataire_id=" . $destinataire_id);
     exit();
 
 } else {
@@ -69,8 +69,8 @@
     echo "Erreur lors de l'envoi du message.";
 }
 
-
   $stmt->close();
   $mysqli->close();
   exit;
+  
 ?>

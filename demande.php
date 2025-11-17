@@ -1,5 +1,10 @@
 <?php
   session_start();
+  if (!isset($_SESSION['id_utilisateur'])) {
+    $_SESSION['erreur'] = "Veuillez vous connecter.";
+    header("Location: connexion.php");
+    exit(); // 🔥 OBLIGATOIRE
+}
   $titre = "Demande de Déménagement";
   include('header.inc.php');
   include('menu_client.inc.php');

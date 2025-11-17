@@ -2,6 +2,11 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+if (!isset($_SESSION['id_utilisateur'])) {
+    $_SESSION['erreur'] = "Veuillez vous connecter.";
+    header("Location: connexion.php");
+    exit(); // 🔥 OBLIGATOIRE
+}
 require_once("param.inc.php");
 $titre = "Mes propositions";
 include('header.inc.php');

@@ -40,10 +40,10 @@ if ($result->num_rows > 0) {
                 header('Location: page_admin.php');
                 break;
             case 'client':
-                header('Location: accueil_client.php');
+                header('Location: demande.php');
                 break;
             case 'demenageur':
-                header('Location: page_demenageur.php');
+                header('Location: afficher_demande.php');
                 break;
             default:
                 $_SESSION['erreur'] = "Statut inconnu, contactez un administrateur.";

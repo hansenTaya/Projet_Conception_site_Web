@@ -39,6 +39,23 @@
              echo  "<a class='btn btn-outline-light btn-lg fw-semibold' href='connexion.php'>Se connecter</a>  ";
 
             }
+            if (isset($_SESSION['id_utilisateur']) && $_SESSION['statut'] === 'client') {
+             echo " <a class='btn btn-light btn-lg fw-semibold' href='demande.php'>Menu Client</a> ";
+             
+
+            }
+             if (isset($_SESSION['id_utilisateur']) && $_SESSION['statut'] === 'demenageur') {
+             echo " <a class='btn btn-light btn-lg fw-semibold' href='afficher_demande.php'>Menu Demenageur</a> ";
+             
+
+            }
+            if (isset($_SESSION['id_utilisateur']) && $_SESSION['statut'] === 'administrateur') {
+             echo " <a class='btn btn-light btn-lg fw-semibold' href='page_admin.php'>Menu Admin</a> ";
+             
+
+            }
+
+
             ?>
           </div>
         </div>

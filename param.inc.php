@@ -2,6 +2,6 @@
   // Paramètre de connexion à la BDD 
   $host="localhost";
   $login="root";
-  $passwd="";
-  $dbname="projet2a"; 
+  $passwd="root";
+  $dbname="projet"; 
 ?>

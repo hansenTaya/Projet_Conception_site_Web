@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['id_utilisateur'])) {
+    $_SESSION['erreur'] = "Veuillez vous connecter.";
+    header("Location: connexion.php");
+    exit(); // 🔥 OBLIGATOIRE
+}
+
 $titre = "Messagerie";
 
 include('header.inc.php');
@@ -32,12 +38,12 @@ $statut_utilisateur = $_SESSION['statut'];
             <?php if ($statut_utilisateur === 'client'): ?>
               <a href="voir_proposition.php" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2 py-2 mb-3">
                 <span>📦</span>
-                <span class="fw-semibold">Voir mes propositions</span>
+                <span class="fw-semibold">Revenir a l'accueil</span>
               </a>
             <?php else: ?>
               <a href="mes_proposition.php" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2 py-2 mb-3">
                 <span>💰</span>
-                <span class="fw-semibold">Mes propositions</span>
+                <span class="fw-semibold">Revenir a l'accueil</span>
               </a>
             <?php endif; ?>
           </div>

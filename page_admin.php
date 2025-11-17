@@ -10,9 +10,15 @@ if ($mysqli->connect_error) {
 
     die("Problème de connexion à la base de données : " . $mysqli->connect_error);
 }
+if (!isset($_SESSION['id_utilisateur'])) {
+    $_SESSION['erreur'] = "Veuillez vous connecter.";
+    header("Location: connexion.php");
+    exit(); // 🔥 OBLIGATOIRE
+}
+
 
 include('header.inc.php');
-include('menu.inc.php');
+
 ?>
 
 <div class="container my-4">

@@ -1,7 +1,11 @@
 <?php
 session_start();
 $titre = "Messagerie";
-
+if (!isset($_SESSION['id_utilisateur'])) {
+    $_SESSION['erreur'] = "Veuillez vous connecter.";
+    header("Location: connexion.php");
+    exit(); // 🔥 OBLIGATOIRE
+}
 include('header.inc.php');
 include('message.inc.php');
 require_once("param.inc.php");

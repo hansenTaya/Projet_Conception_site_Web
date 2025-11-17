@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 include('message.inc.php');
 ?>
 
@@ -36,13 +37,6 @@ include('message.inc.php');
           <small class="text-muted">Missions actives</small>
         </div>
       </a>
-      <a href="evaluer.php" class="btn btn-outline-warning text-start d-flex align-items-center gap-3 py-3">
-        <span class="fs-4">⭐</span>
-        <div class="flex-grow-1">
-          <div class="fw-semibold">Évaluer</div>
-          <small class="text-muted">Noter un service</small>
-        </div>
-      </a>
       <a href="messagerie.php" class="btn btn-outline-success text-start d-flex align-items-center gap-3 py-3">
         <span class="fs-4">💬</span>
         <div class="flex-grow-1">
@@ -53,6 +47,3 @@ include('message.inc.php');
     </div>
   </div>
 
-  <!-- Contenu principal -->
-  <div class="flex-grow-1 p-4 p-md-5">
-    <div class="container-fluid px-0">

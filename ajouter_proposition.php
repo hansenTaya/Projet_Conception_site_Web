@@ -51,6 +51,6 @@ $stmt->close();
 $mysqli->close();
 
 // Redirection après ajout
-header('Location: menu_demenageur.php');
+header('Location: afficher_demande.php');
 exit();
 ?>
