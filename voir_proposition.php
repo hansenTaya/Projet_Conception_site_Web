@@ -44,40 +44,107 @@ if (!$result) {
 }
 
 // Affichage
+?>
+<div class="mb-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary mb-2">💰 Mes Propositions</h2>
+    <p class="text-muted">Gérez les offres reçues pour vos demandes de déménagement</p>
+  </div>
 
-echo "<h2 class='mb-4 text-center'>💰 Mes propositions</h2>";
-
+<?php
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Détermination de la couleur selon la réponse
         $reponse = isset($row['reponse']) ? $row['reponse'] : 'en_attente';
-        $badgeClass = 'secondary'; // par défaut
-        if ($reponse === 'acceptee') $badgeClass = 'success';
-        elseif ($reponse === 'refusee') $badgeClass = 'danger';
-        elseif ($reponse === 'en_attente') $badgeClass = 'warning';
+        $badgeClass = 'secondary';
+        $badgeText = 'En attente';
+        $badgeIcon = '⏳';
+        if ($reponse === 'acceptee') {
+            $badgeClass = 'success';
+            $badgeText = 'Acceptée';
+            $badgeIcon = '✅';
+        } elseif ($reponse === 'refusee') {
+            $badgeClass = 'danger';
+            $badgeText = 'Refusée';
+            $badgeIcon = '❌';
+        } elseif ($reponse === 'en_attente') {
+            $badgeClass = 'warning';
+            $badgeText = 'En attente';
+            $badgeIcon = '⏳';
+        }
 
-            echo "<div class='card shadow-sm p-3 mb-4 border-0'>";
-            echo "  <div class='card-body'>";
-            echo "    <h4 class='card-title text-primary'>" . htmlspecialchars($row['titre']) . "</h4>";
-            echo "    <p class='card-text mb-2'><strong>💸 Montant proposé :</strong> " . htmlspecialchars($row['prix']) . " €</p>";
-            echo "    <p class='card-text mb-0'><strong>Statut :</strong> <span class='badge bg-$badgeClass'>" . htmlspecialchars($reponse) . "</span></p>";
-
-                echo "<form action='traiter_proposition.php' method='post' class='mt-3'>";
-                echo "  <input type='hidden' name='id_proposition' value='" . $row['id_proposition'] . "'>";
-                echo "  <button type='submit' name='action' value='accepter' class='btn btn-success btn-sm me-2'>✅ Accepter</button>";
-                echo "  <button type='submit' name='action' value='refuser' class='btn btn-danger btn-sm'>❌ Refuser</button>";
-                echo "</form>";
+        $nom_contact = ($statut === 'client') ? htmlspecialchars($row['nom_demenageur']) : htmlspecialchars($row['nom_client']);
+        ?>
+        <div class="card border-0 shadow-lg mb-4 overflow-hidden">
+          <div class="card-header bg-gradient bg-primary text-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0 fw-bold"><?= htmlspecialchars($row['titre']) ?></h4>
+              <span class="badge bg-white text-<?= $badgeClass ?> fs-6 px-3 py-2">
+                <?= $badgeIcon ?> <?= $badgeText ?>
+              </span>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                  <div class="fs-1">💸</div>
+                  <div>
+                    <div class="text-muted small">Montant proposé</div>
+                    <div class="h4 mb-0 fw-bold text-primary"><?= htmlspecialchars($row['prix']) ?> €</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                  <div class="fs-1">👤</div>
+                  <div>
+                    <div class="text-muted small"><?= ($statut === 'client') ? 'Déménageur' : 'Client' ?></div>
+                    <div class="h5 mb-0 fw-semibold"><?= $nom_contact ?></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-
-            echo "  </div>";
-            echo "</div>";
-
+            <?php if ($reponse === 'en_attente'): ?>
+            <div class="border-top pt-4">
+              <form action="traiter_proposition.php" method="post" class="d-flex gap-3 justify-content-end">
+                <input type="hidden" name="id_proposition" value="<?= $row['id_proposition'] ?>">
+                <button type="submit" name="action" value="accepter" class="btn btn-success btn-lg px-5 shadow-sm">
+                  <span class="me-2">✅</span>Accepter
+                </button>
+                <button type="submit" name="action" value="refuser" class="btn btn-outline-danger btn-lg px-5">
+                  <span class="me-2">❌</span>Refuser
+                </button>
+              </form>
+            </div>
+            <?php endif; ?>
+          </div>
+        </div>
+        <?php
     }
 } else {
-    echo "<div class='alert alert-info text-center p-4 rounded shadow-sm'>";
-    echo "  <h5>Aucune proposition pour le moment 💤</h5>";
-    echo "  <p class='mb-0'>Revenez plus tard pour voir les réponses des déménageurs.</p>";
-    echo "</div>";
+    ?>
+    <div class="card border-0 shadow-lg">
+      <div class="card-body text-center p-5">
+        <div class="mb-4">
+          <span class="display-1">💤</span>
+        </div>
+        <h4 class="fw-bold text-muted mb-3">Aucune proposition pour le moment</h4>
+        <p class="text-muted mb-4">Revenez plus tard pour voir les réponses des déménageurs.</p>
+        <a href="demande.php" class="btn btn-primary btn-lg">
+          <span class="me-2">🧳</span>Créer une demande
+        </a>
+      </div>
+    </div>
+    <?php
 }
+?>
+</div>
+  </div>
+</div>
+</div>
 
+<?php
+include('footer.inc.php');
 ?>

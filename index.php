@@ -16,7 +16,7 @@
       SELECT d.*, u.nom, u.prenom 
       FROM demande d
       JOIN utilisateur u ON d.id_utilisateur = u.id_utilisateur
-      ORDER BY d.date DESC 
+      ORDER BY d.date_prevue DESC 
       LIMIT 4
   ";
   $annonces = $mysqli->query($sql);
@@ -177,7 +177,7 @@
                   <h5 class="fw-semibold"><?= htmlspecialchars($a['ville_depart']); ?> -> <?= htmlspecialchars($a['ville_arrive']); ?></h5>
                   <p class="text-muted small mb-1">Client : <?= htmlspecialchars($a['nom'] . ' ' . $a['prenom']); ?></p>
                   <p class="small mb-1">Volume : <strong><?= htmlspecialchars($a['volume']); ?> m3</strong></p>
-                  <p class="small mb-1">Date : <?= htmlspecialchars($a['date']); ?></p>
+                  <p class="small mb-1">Date : <?= htmlspecialchars($a['date_prevue']); ?></p>
                   <p class="small text-muted mb-0"><?= htmlspecialchars(substr($a['description'], 0, 60)); ?>...</p>
                 </div>
               </div>

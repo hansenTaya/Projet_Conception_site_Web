@@ -42,35 +42,164 @@ $stmt->bind_param("i", $id_utilisateur);
 $stmt->execute();
 $result = $stmt->get_result();
 
-echo "<h2 class='mb-4 text-center'>🚛 Mes missions</h2>";
+?>
+<div class="mb-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary mb-2">🚛 Mes Missions</h2>
+    <p class="text-muted">Déménagements acceptés et en cours</p>
+  </div>
 
+<?php
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo "<div class='card shadow-sm p-3 mb-4 border-0'>";
-        echo "  <div class='card-body'>";
-        echo "    <h4 class='card-title text-primary'>" . htmlspecialchars($row['titre']) . "</h4>";
-        echo "    <p class='card-text mb-2'><strong>Client :</strong> " . htmlspecialchars($row['nom_client']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Date :</strong> " . htmlspecialchars($row['date_prevue']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Adresse départ :</strong> " . htmlspecialchars($row['adresse_depart'] . ", " . $row['ville_depart']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Adresse arrivée :</strong> " . htmlspecialchars($row['adresse_arrive'] . ", " . $row['ville_arrive']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Type logement départ :</strong> " . htmlspecialchars($row['type_logement_depart']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Type logement arrivée :</strong> " . htmlspecialchars($row['type_logement_arrive']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Volume :</strong> " . htmlspecialchars($row['volume']) . " m³</p>";
-        echo "    <p class='card-text mb-2'><strong>Ascenseur :</strong> " . ($row['ascenseur'] ? 'Oui' : 'Non') . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Nombre de déménageurs :</strong> " . htmlspecialchars($row['nbr_demenageur']) . "</p>";
-        echo "    <p class='card-text mb-2'><strong>Montant proposé :</strong> " . htmlspecialchars($row['prix']) . " €</p>";
-        echo "    <p class='card-text mb-2'><strong>Description :</strong> " . nl2br(htmlspecialchars($row['description'])) . "</p>";
-        if (!empty($row['photo_path'])) {
-            echo "<p><img src='" . htmlspecialchars($row['photo_path']) . "' alt='Photo' style='max-width:300px; height:auto;' class='img-thumbnail'></p>";
-        }
-        echo "    <p class='card-text mb-0'><span class='badge bg-success'>Acceptée</span></p>";
-        echo "  </div>";
-        echo "</div>";
+        ?>
+        <div class="card border-0 shadow-lg mb-4 overflow-hidden">
+          <div class="card-header bg-success bg-gradient text-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0 fw-bold"><?= htmlspecialchars($row['titre']) ?></h4>
+              <span class="badge bg-white text-success fs-6 px-3 py-2">
+                ✅ Acceptée
+              </span>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4 mb-4">
+              <div class="col-md-6 col-lg-3">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded h-100">
+                  <div class="fs-1">👤</div>
+                  <div>
+                    <div class="text-muted small">Client</div>
+                    <div class="h6 mb-0 fw-semibold"><?= htmlspecialchars($row['nom_client']) ?></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded h-100">
+                  <div class="fs-1">📅</div>
+                  <div>
+                    <div class="text-muted small">Date prévue</div>
+                    <div class="h6 mb-0 fw-semibold"><?= htmlspecialchars($row['date_prevue']) ?></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded h-100">
+                  <div class="fs-1">📦</div>
+                  <div>
+                    <div class="text-muted small">Volume</div>
+                    <div class="h6 mb-0 fw-semibold"><?= htmlspecialchars($row['volume']) ?> m³</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded h-100">
+                  <div class="fs-1">💸</div>
+                  <div>
+                    <div class="text-muted small">Montant</div>
+                    <div class="h5 mb-0 fw-bold text-success"><?= htmlspecialchars($row['prix']) ?> €</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <div class="card bg-light border-0 p-3">
+                  <h6 class="fw-bold text-primary mb-3">📍 Adresse de départ</h6>
+                  <p class="mb-1"><strong><?= htmlspecialchars($row['adresse_depart']) ?></strong></p>
+                  <p class="mb-1 text-muted"><?= htmlspecialchars($row['ville_depart']) ?></p>
+                  <p class="mb-0"><small class="text-muted">Type : <?= htmlspecialchars($row['type_logement_depart']) ?></small></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card bg-light border-0 p-3">
+                  <h6 class="fw-bold text-primary mb-3">📍 Adresse d'arrivée</h6>
+                  <p class="mb-1"><strong><?= htmlspecialchars($row['adresse_arrive']) ?></strong></p>
+                  <p class="mb-1 text-muted"><?= htmlspecialchars($row['ville_arrive']) ?></p>
+                  <p class="mb-0"><small class="text-muted">Type : <?= htmlspecialchars($row['type_logement_arrive']) ?></small></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+              <div class="col-md-4">
+                <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <span class="fs-4">🚪</span>
+                  <div>
+                    <div class="text-muted small">Ascenseur</div>
+                    <div class="fw-semibold"><?= $row['ascenseur'] ? 'Oui' : 'Non' ?></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                  <span class="fs-4">👥</span>
+                  <div>
+                    <div class="text-muted small">Déménageurs</div>
+                    <div class="fw-semibold"><?= htmlspecialchars($row['nbr_demenageur']) ?> personnes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <?php if (!empty($row['description'])): ?>
+            <div class="mb-4">
+              <h6 class="fw-bold text-primary mb-2">📝 Description</h6>
+              <div class="card bg-light border-0 p-3">
+                <p class="mb-0"><?= nl2br(htmlspecialchars($row['description'])) ?></p>
+              </div>
+            </div>
+            <?php endif; ?>
+
+            <?php
+            $photos = $mysqli->query("SELECT photo_path FROM photos_demande WHERE id_demande = " . $row['id_demande']);
+            if ($photos && $photos->num_rows > 0): ?>
+              <div class="mb-4">
+                <h6 class="fw-bold text-primary mb-3">📷 Photos</h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <?php while ($p = $photos->fetch_assoc()): ?>
+                    <img src="<?= htmlspecialchars($p['photo_path']) ?>" 
+                         alt="Photo" 
+                         class="img-thumbnail rounded" 
+                         style="max-width:150px; height:auto;">
+                  <?php endwhile; ?>
+                </div>
+              </div>
+            <?php endif; ?>
+
+            <div class="border-top pt-4">
+              <div class="d-flex gap-3 justify-content-end">
+                <a href="messagerie.php?destinataire_id=<?= $row['id_client'] ?>" class="btn btn-outline-primary btn-lg px-4">
+                  <span class="me-2">💬</span>Contacter le client
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php
     }
 } else {
-    echo "<div class='alert alert-info text-center p-4 rounded shadow-sm'>";
-    echo "  <h5>Aucune mission en cours 💤</h5>";
-    echo "  <p class='mb-0'>Vous n'avez actuellement aucun déménagement accepté.</p>";
-    echo "</div>";
+    ?>
+    <div class="card border-0 shadow-lg">
+      <div class="card-body text-center p-5">
+        <div class="mb-4">
+          <span class="display-1">💤</span>
+        </div>
+        <h4 class="fw-bold text-muted mb-3">Aucune mission en cours</h4>
+        <p class="text-muted mb-4">Vous n'avez actuellement aucun déménagement accepté.</p>
+        <a href="afficher_demande.php" class="btn btn-primary btn-lg">
+          <span class="me-2">📋</span>Voir les demandes
+        </a>
+      </div>
+    </div>
+    <?php
 }
+?>
+</div>
+  </div>
+</div>
+</div>
+
+<?php
+include('footer.inc.php');
 ?>

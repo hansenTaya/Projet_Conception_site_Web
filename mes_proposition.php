@@ -3,8 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once("param.inc.php");
-
+$titre = "Mes propositions";
+include('header.inc.php');
 include('menu_demenageur.php');
+
 if (!isset($_SESSION['id_utilisateur'])) {
     die("Erreur : l'utilisateur n'est pas connecté.");
 }
@@ -25,43 +27,81 @@ if (!$result) {
     die("Erreur SQL : " . $mysqli->error . "<br>Requête : " . $sql);
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>🚚 Just Move It :) - Déménageur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<div class="mb-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary mb-2">💰 Mes Propositions</h2>
+    <p class="text-muted">Suivez l'état de vos offres envoyées aux clients</p>
+  </div>
 
-<div class="container">
-    <h2 class="mb-4">💰 Mes propositions</h2>
-
-    <?php if ($result->num_rows > 0): ?>
-        <?php while ($p = $result->fetch_assoc()): ?>
-            <div class="card mb-3 shadow-sm p-3">
-                <h5 class="card-title"><?= htmlspecialchars($p['titre']) ?></h5>
-                <p>Client : <strong><?= htmlspecialchars($p['nom_client']) ?></strong></p>
-                <p>Prix proposé : <?= htmlspecialchars($p['prix']) ?> €</p>
-                <p>Statut :
-                    <?php if ($p['reponse'] === 'acceptee'): ?>
-                        <span class="badge bg-success">Acceptée ✅</span>
-                    <?php elseif ($p['reponse'] === 'refusee'): ?>
-                        <span class="badge bg-danger">Refusée ❌</span>
-                    <?php else: ?>
-                        <span class="badge bg-warning text-dark">En attente...</span>
-                    <?php endif; ?>
-                </p>
+<?php if ($result->num_rows > 0): ?>
+    <?php while ($p = $result->fetch_assoc()): 
+        $badgeClass = 'warning';
+        $badgeText = 'En attente';
+        $badgeIcon = '⏳';
+        if ($p['reponse'] === 'acceptee') {
+            $badgeClass = 'success';
+            $badgeText = 'Acceptée';
+            $badgeIcon = '✅';
+        } elseif ($p['reponse'] === 'refusee') {
+            $badgeClass = 'danger';
+            $badgeText = 'Refusée';
+            $badgeIcon = '❌';
+        }
+    ?>
+        <div class="card border-0 shadow-lg mb-4 overflow-hidden">
+          <div class="card-header bg-gradient bg-primary text-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0 fw-bold"><?= htmlspecialchars($p['titre']) ?></h4>
+              <span class="badge bg-white text-<?= $badgeClass ?> fs-6 px-3 py-2">
+                <?= $badgeIcon ?> <?= $badgeText ?>
+              </span>
             </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <div class="alert alert-info">Aucune proposition trouvée pour l’instant.</div>
-    <?php endif; ?>
-
-    
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                  <div class="fs-1">👤</div>
+                  <div>
+                    <div class="text-muted small">Client</div>
+                    <div class="h5 mb-0 fw-semibold"><?= htmlspecialchars($p['nom_client']) ?></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded">
+                  <div class="fs-1">💸</div>
+                  <div>
+                    <div class="text-muted small">Prix proposé</div>
+                    <div class="h4 mb-0 fw-bold text-primary"><?= htmlspecialchars($p['prix']) ?> €</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <?php endwhile; ?>
+<?php else: ?>
+    <div class="card border-0 shadow-lg">
+      <div class="card-body text-center p-5">
+        <div class="mb-4">
+          <span class="display-1">💤</span>
+        </div>
+        <h4 class="fw-bold text-muted mb-3">Aucune proposition pour le moment</h4>
+        <p class="text-muted mb-4">Vous n'avez pas encore envoyé de propositions.</p>
+        <a href="afficher_demande.php" class="btn btn-primary btn-lg">
+          <span class="me-2">📋</span>Voir les demandes
+        </a>
+      </div>
+    </div>
+<?php endif; ?>
+</div>
+  </div>
+</div>
 </div>
 
-</body>
-</html>
+<?php
+include('footer.inc.php');
+?>
 
 
